@@ -51,7 +51,10 @@ def run_cli(args):
     
     # Setup logger
     log_level = args.debug and "debug" or config.get("loglevel", "info")
-    logger = setup_logger("maple_bot", log_level)
+    max_log_files = config.get("max-log-files", 5)
+    logger = setup_logger("maple_bot", log_level, max_log_files=max_log_files)
+    if getattr(logger, "_log_file_path", None):
+        print(f"Log file: {logger._log_file_path}")
     
     # Connect to BlueStacks
     adb_config = config.get("adb", {})
@@ -121,7 +124,7 @@ BlueStacks Setup:
     )
     parser.add_argument(
         "--quest", "-q",
-        choices=["sleepywood", "ludibrium", "zakum"],
+        choices=["sleepywood", "ludibrium", "zakum", "orbis"],
         help="Party quest to run"
     )
     parser.add_argument(

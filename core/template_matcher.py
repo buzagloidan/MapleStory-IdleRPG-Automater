@@ -174,6 +174,8 @@ class TemplateMatcher:
         
         if max_val >= threshold:
             h, w = template.shape[:2]
+            if self.logger.isEnabledFor(logging.DEBUG):
+                self.logger.debug(f"Template {template_name} matched: {max_val:.3f} >= {threshold}")
             return MatchResult(
                 name=template_name,
                 x=max_loc[0],
@@ -183,6 +185,8 @@ class TemplateMatcher:
                 confidence=max_val
             )
         
+        if self.logger.isEnabledFor(logging.DEBUG):
+            self.logger.debug(f"Template {template_name} best match {max_val:.3f} < threshold {threshold}")
         return None
     
     def find_all(

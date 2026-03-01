@@ -16,6 +16,7 @@ class ConfigManager:
     
     DEFAULT_CONFIG = {
         "loglevel": "info",
+        "max-log-files": 5,
         "adb": {
             "host": "127.0.0.1",
             "port": 5555,  # BlueStacks default
@@ -157,6 +158,9 @@ def create_default_config(path: str = "config/settings.yaml"):
 # Logging level: debug | info | warning | error
 loglevel: info
 
+# Keep only this many most recent log files (0 = keep all)
+max-log-files: 5
+
 # ──────────────────────────────────────────────────────────────────────────────
 # ADB Connection Settings
 # ──────────────────────────────────────────────────────────────────────────────
@@ -179,7 +183,7 @@ bot-option:
   # Options: 0 = disabled | 1 = after 1 run | 50 = after 50 runs, etc.
   auto-growth-after-pq-runs: 50
   
-  # Quest options: sleepywood | ludibrium | zakum
+  # Quest options: sleepywood | ludibrium | zakum | orbis
   quest-choice: sleepywood
   
   # Solo mode: true | false

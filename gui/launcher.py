@@ -82,7 +82,12 @@ class BotLauncher:
         # Bot components
         self.config_manager = ConfigManager()
         self.config = self.config_manager.load()
-        self.logger = setup_logger("maple_bot", self.config.get("loglevel", "info"), log_to_file=False)
+        self.logger = setup_logger(
+            "maple_bot",
+            self.config.get("loglevel", "info"),
+            log_to_file=True,
+            max_log_files=self.config.get("max-log-files", 5),
+        )
         
         self.adb: Optional[ADBController] = None
         self.bot: Optional[MapleStoryIdleBot] = None
@@ -227,6 +232,20 @@ class BotLauncher:
             command=lambda: self._select_quest("ludibrium")
         )
         self.ludi_btn.pack(side="left", padx=(6, 0))
+        
+        self.orbis_btn = ctk.CTkButton(
+            quest_row,
+            text="Orbis",
+            width=100,
+            height=32,
+            font=ctk.CTkFont(size=11),
+            fg_color=self.COLORS["input_bg"],
+            hover_color=self.COLORS["border"],
+            text_color=self.COLORS["text_secondary"],
+            corner_radius=6,
+            command=lambda: self._select_quest("orbis")
+        )
+        self.orbis_btn.pack(side="left", padx=(6, 0))
         
         # Options row
         options_row = ctk.CTkFrame(inner, fg_color="transparent")
@@ -403,25 +422,11 @@ class BotLauncher:
     def _select_quest(self, quest: str):
         """Select quest type."""
         self.quest_var.set(quest)
-        
-        if quest == "sleepywood":
-            self.sleepy_btn.configure(
-                fg_color=self.COLORS["primary"],
-                text_color="white"
-            )
-            self.ludi_btn.configure(
-                fg_color=self.COLORS["input_bg"],
-                text_color=self.COLORS["text_secondary"]
-            )
-        else:
-            self.ludi_btn.configure(
-                fg_color=self.COLORS["primary"],
-                text_color="white"
-            )
-            self.sleepy_btn.configure(
-                fg_color=self.COLORS["input_bg"],
-                text_color=self.COLORS["text_secondary"]
-            )
+        selected = {"fg_color": self.COLORS["primary"], "text_color": "white"}
+        unselected = {"fg_color": self.COLORS["input_bg"], "text_color": self.COLORS["text_secondary"]}
+        self.sleepy_btn.configure(**selected if quest == "sleepywood" else unselected)
+        self.ludi_btn.configure(**selected if quest == "ludibrium" else unselected)
+        self.orbis_btn.configure(**selected if quest == "orbis" else unselected)
     
     def _toggle_connection(self):
         """Toggle ADB connection."""

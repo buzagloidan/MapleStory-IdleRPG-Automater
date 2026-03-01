@@ -13,7 +13,7 @@ bot-option:
   # Queue timeout in SECONDS (default: 30)
   queue-timeout: 30
   
-  # Quest choice: sleepywood | ludibrium
+  # Quest choice: sleepywood | ludibrium | zakum | orbis
   quest-choice: sleepywood
   
   # Random actions for anti-detection

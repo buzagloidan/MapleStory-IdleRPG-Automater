@@ -35,14 +35,15 @@ class MapleStoryIdleBot:
     - app_button: Open the game
     - main_menu: Menu button (top-right)
     - pq_button: Party Quest button
-    - sleepywood/ludibrium: Quest selection
+    - sleepywood/ludibrium/orbis: Quest selection
     - start_queue: Start queue button
     - in_queue: Waiting in queue
     - stop_queue: Cancel queue button
     - confirm: OK/Confirm (PRIORITY!)
     - loading_screen, loading_screen2, loading_screen3, loading_screen4, loading_screen5: Game loading
-    - wave_1, wave_2, wave_3: In PQ (Sleepywood waves)
-    - wave_11, wave_22, wave_33: In PQ (Ludibrium waves)
+    - sleepywood_wave_1, sleepywood_wave_2, sleepywood_wave_3: In PQ (Sleepywood waves)
+    - ludibrium_wave_11, ludibrium_wave_22, ludibrium_wave_33: In PQ (Ludibrium waves)
+    - orbis_wave_1, orbis_wave_2, orbis_wave_3: In PQ (Orbis waves)
     - clear: PQ complete indicator (triggers PQ finish)
     - failed: PQ failed mid-run indicator (triggers recovery)
     - red_alert: Boss red attack indicator (wave 3 only) - triggers immediate double-jump
@@ -55,6 +56,7 @@ class MapleStoryIdleBot:
         "pq_button": (480, 400),
         "sleepywood": (300, 350),
         "ludibrium": (480, 350),
+        "orbis": (660, 350),
         "start_queue": (480, 450),
         "stop_queue": (750, 480),
         "confirm": (480, 400),
@@ -513,18 +515,25 @@ class MapleStoryIdleBot:
         """Check if any wave indicator is visible. Returns wave number or 0."""
         # Different wave templates per quest
         if self.quest_choice == "ludibrium":
-            if self.matcher.find(screen, "wave_33"):
+            if self.matcher.find(screen, "ludibrium_wave_33"):
                 return 3
-            if self.matcher.find(screen, "wave_22"):
+            if self.matcher.find(screen, "ludibrium_wave_22"):
                 return 2
-            if self.matcher.find(screen, "wave_11"):
+            if self.matcher.find(screen, "ludibrium_wave_11"):
                 return 1
-        else:  # sleepywood
-            if self.matcher.find(screen, "wave_3"):
+        elif self.quest_choice == "orbis":
+            if self.matcher.find(screen, "orbis_wave_3"):
                 return 3
-            if self.matcher.find(screen, "wave_2"):
+            if self.matcher.find(screen, "orbis_wave_2"):
                 return 2
-            if self.matcher.find(screen, "wave_1"):
+            if self.matcher.find(screen, "orbis_wave_1"):
+                return 1
+        elif self.quest_choice == "sleepywood":
+            if self.matcher.find(screen, "sleepywood_wave_3"):
+                return 3
+            if self.matcher.find(screen, "sleepywood_wave_2"):
+                return 2
+            if self.matcher.find(screen, "sleepywood_wave_1"):
                 return 1
         return 0
     
@@ -631,6 +640,10 @@ class MapleStoryIdleBot:
             self.last_pq_entry_time = datetime.now()  # Reset PQ entry timer
             self.last_jump_time = None  # Reset jump timer for new PQ
             self._activity()  # Real progress!
+            return
+        
+        # Stop/cancel button visible = still on queue screen (avoid flip-flop with _detect_and_act)
+        if self.matcher.find(screen, "stop_queue"):
             return
         
         # Not in queue anymore
