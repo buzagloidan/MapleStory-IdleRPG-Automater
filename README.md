@@ -11,7 +11,7 @@ This project is for **educational purposes only**. It is free to use, modify, an
 ## Features
 
 - Auto Party Quest with queue timeout handling
-- Quest selection (Sleepywood, Ludibrium, Zakum, Orbis)
+- Quest selection (Sleepywood, Ludibrium, Zakum, Orbis, Dong)
 - Auto recovery from stuck states and connection loss
 - Random jump actions during PQ
 - GUI and CLI modes
@@ -50,7 +50,7 @@ python tools/template_creator.py --port 5555
 python main.py
 
 # CLI mode
-python main.py --cli --port 5555 --quest sleepywood   # or ludibrium, zakum, orbis
+python main.py --cli --port 5555 --quest sleepywood   # or ludibrium, zakum, orbis, dong
 ```
 
 ## Project Structure

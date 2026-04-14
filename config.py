@@ -183,7 +183,7 @@ bot-option:
   # Options: 0 = disabled | 1 = after 1 run | 50 = after 50 runs, etc.
   auto-growth-after-pq-runs: 50
   
-  # Quest options: sleepywood | ludibrium | zakum | orbis
+  # Quest options: sleepywood | ludibrium | zakum | orbis | dong
   quest-choice: sleepywood
   
   # Solo mode: true | false
