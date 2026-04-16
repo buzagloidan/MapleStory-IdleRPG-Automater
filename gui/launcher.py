@@ -247,6 +247,20 @@ class BotLauncher:
         )
         self.orbis_btn.pack(side="left", padx=(6, 0))
         
+        self.event_btn = ctk.CTkButton(
+            quest_row,
+            text="Dong",
+            width=100,
+            height=32,
+            font=ctk.CTkFont(size=11),
+            fg_color=self.COLORS["input_bg"],
+            hover_color=self.COLORS["border"],
+            text_color=self.COLORS["text_secondary"],
+            corner_radius=6,
+            command=lambda: self._select_quest("dong")
+        )
+        self.event_btn.pack(side="left", padx=(6, 0))
+        
         # Options row
         options_row = ctk.CTkFrame(inner, fg_color="transparent")
         options_row.pack(fill="x", pady=(0, 10))
@@ -427,6 +441,13 @@ class BotLauncher:
         self.sleepy_btn.configure(**selected if quest == "sleepywood" else unselected)
         self.ludi_btn.configure(**selected if quest == "ludibrium" else unselected)
         self.orbis_btn.configure(**selected if quest == "orbis" else unselected)
+        self.event_btn.configure(**selected if quest == "dong" else unselected)
+        
+        # Hide jump option for Dong PQ (not available)
+        if quest == "dong":
+            self.jump_check.pack_forget()
+        else:
+            self.jump_check.pack(side="right")
     
     def _toggle_connection(self):
         """Toggle ADB connection."""

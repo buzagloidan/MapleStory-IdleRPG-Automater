@@ -35,7 +35,8 @@ class MapleStoryIdleBot:
     - app_button: Open the game
     - main_menu: Menu button (top-right)
     - pq_button: Party Quest button
-    - sleepywood/ludibrium/orbis: Quest selection
+    - sleepywood/ludibrium/orbis: Quest selection (regular PQs)
+    - dong: Dong PQ button (accessed directly)
     - start_queue: Start queue button
     - in_queue: Waiting in queue
     - stop_queue: Cancel queue button
@@ -44,6 +45,7 @@ class MapleStoryIdleBot:
     - sleepywood_wave_1, sleepywood_wave_2, sleepywood_wave_3: In PQ (Sleepywood waves)
     - ludibrium_wave_11, ludibrium_wave_22, ludibrium_wave_33: In PQ (Ludibrium waves)
     - orbis_wave_1, orbis_wave_2, orbis_wave_3: In PQ (Orbis waves)
+    - dong_wave1, dong_wave2, dong_wave3: In PQ (Dong waves)
     - clear: PQ complete indicator (triggers PQ finish)
     - failed: PQ failed mid-run indicator (triggers recovery)
     - red_alert: Boss red attack indicator (wave 3 only) - triggers immediate double-jump
@@ -473,8 +475,9 @@ class MapleStoryIdleBot:
             if self.current_wave == 3:
                 self._check_red_alert(screen)
             
-            # Try to jump during PQ (if random_actions enabled)
-            self._try_jump(screen)
+            # Try to jump during PQ (if random_actions enabled, not for Dong)
+            if self.quest_choice != "dong":
+                self._try_jump(screen)
             
             # Fast loop during PQ to catch brief wave indicators (0.5s)
             # Wave indicators only appear for a few seconds at wave start!
@@ -528,6 +531,13 @@ class MapleStoryIdleBot:
                 return 2
             if self.matcher.find(screen, "orbis_wave_1"):
                 return 1
+        elif self.quest_choice == "dong":
+            if self.matcher.find(screen, "dong_wave3"):
+                return 3
+            if self.matcher.find(screen, "dong_wave2"):
+                return 2
+            if self.matcher.find(screen, "dong_wave1"):
+                return 1
         elif self.quest_choice == "sleepywood":
             if self.matcher.find(screen, "sleepywood_wave_3"):
                 return 3
@@ -579,6 +589,10 @@ class MapleStoryIdleBot:
         If detected, immediately double-jump to avoid the attack.
         Returns True if red alert was detected and jumped.
         """
+        # Skip for Dong PQ (no jumping)
+        if self.quest_choice == "dong":
+            return False
+        
         # Only check during wave 3
         if self.current_wave != 3:
             return False

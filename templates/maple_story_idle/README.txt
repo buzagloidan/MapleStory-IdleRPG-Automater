@@ -9,6 +9,7 @@ CURRENT TEMPLATES:
   [x] sleepywood.png    - Sleepywood quest option
   [x] ludibrium.png     - Ludibrium quest option
   [x] orbis.png         - Orbis quest option
+  [x] dong.png          - Dong PQ button
   [x] start_queue.png   - Start queue button
   [x] in_queue.png      - Waiting in queue indicator
   [x] stop_queue.png    - Cancel queue button
@@ -22,6 +23,7 @@ WAVE TEMPLATES (in-PQ detection per quest):
   Sleepywood: sleepywood_wave_1.png, sleepywood_wave_2.png, sleepywood_wave_3.png
   Ludibrium:  ludibrium_wave_11.png, ludibrium_wave_22.png, ludibrium_wave_33.png
   Orbis:      orbis_wave_1.png, orbis_wave_2.png, orbis_wave_3.png
+  Dong:       dong_wave1.png, dong_wave2.png, dong_wave3.png
 
 OPTIONAL (for better detection):
   [ ] red_alert.png     - Boss red attack indicator (wave 3)
@@ -42,7 +44,7 @@ BOT FLOW
    - Clicks it to open PQ selection
 
 3. SELECTING_QUEST
-   - Looks for: sleepywood, ludibrium, or orbis (based on config)
+   - Looks for: sleepywood, ludibrium, orbis, or dong (based on config)
    - Clicks to select quest
 
 4. CLICKING_START
@@ -59,7 +61,7 @@ BOT FLOW
    - Clicks to cancel and retry
 
 7. IN_PQ
-   - Looks for: wave templates (sleepywood_wave_*, ludibrium_wave_*, orbis_wave_*), confirm, clear
+   - Looks for: wave templates (sleepywood_wave_*, ludibrium_wave_*, orbis_wave_*, dong_wave*), confirm, clear
    - Waits for completion
 
 8. PQ_COMPLETED
