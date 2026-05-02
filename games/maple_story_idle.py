@@ -707,6 +707,16 @@ class MapleStoryIdleBot:
             self._log("Clicking START QUEUE")
             self._activity()  # Button click is progress
             time.sleep(1)
+            
+            # After start_queue, check for auto_match and click at specific coordinates
+            new_screen = self.screen.capture(use_cache=False)
+            if new_screen is not None:
+                auto_match = self.matcher.find(new_screen, "auto_match")
+                if auto_match:
+                    self._log("Auto-match detected - clicking at (664, 374)")
+                    self.input.tap(664, 374)
+                    time.sleep(0.5)
+            
             self.in_queue = True
             self.queue_start_time = datetime.now()
             return
